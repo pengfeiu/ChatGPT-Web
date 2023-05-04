@@ -24,6 +24,7 @@ router.post('/chat-process', [auth, limiter], async (req, res) => {
 
   try {
     const { prompt, options = {}, systemMessage, temperature, top_p } = req.body as RequestProps
+    let lastText: string | null = null // 用于保存最后一句话的值
     let firstChunk = true
     await chatReplyProcess({
       message: prompt,
@@ -36,6 +37,10 @@ router.post('/chat-process', [auth, limiter], async (req, res) => {
       temperature,
       top_p,
     })
+    if (lastText) {
+      console.log('问：'+prompt)
+      console.log('答：'+lastTexta)
+    }
   }
   catch (error) {
     res.write(JSON.stringify(error))
